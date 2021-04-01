@@ -1,0 +1,30 @@
+version: "3.4"
+services:
+  server:
+    container_name: ${PROJECT_NAME}-server
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+    command: yarn dev
+    volumes:
+      - .:/home/node
+      - /home/node/node_modules
+    stdin_open: true
+    tty: true
+    ports:
+      - "${PORT}:3001"
+    depends_on:
+      - db
+
+  db:
+    container_name: ${PROJECT_NAME}-db
+    restart: always
+    image: postgres
+    ports:
+      - ${DATABASE_PORT}:5432
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_DB}
+    volumes:
+      - /pgdata:/var/lib/postgresql/data
