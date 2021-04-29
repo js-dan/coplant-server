@@ -5,11 +5,21 @@ import AppUserRepository from '../repositories/AppUserRepository';
 
 const appUserRouter = Router();
 
-appUserRouter.post('/', async (req, res) => {
+appUserRouter.post('/new', async (req, res) => {
+  let userName = req.body.name
+  let userPhone = req.body.phone
+
+  let user = new AppUser()
+  user.name = userName
+  user.phone = userPhone
+  user.latitude = 0
+  user.longitude = 0
+
   try {
     const repo = getRepository(AppUser);
-    const response = await repo.save(req.body);
-    return res.status(201).json(res);
+    const response = await repo.save(user);
+    return res.status(201).json(response);
+
   } catch (err) {
     console.log('err.message :>> ', err.message);
   }

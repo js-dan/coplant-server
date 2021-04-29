@@ -18,16 +18,17 @@ appAuthentcationRouter.post('/', async (req, res) => {
   }
 });
 
-appAuthentcationRouter.post('/login', (req, res, next) => {
-    if(req.body.user === 'luiz' && req.body.password === '123'){
-      const id = 1; 
-      const token = jwt.sign({ id }, process.env.SECRET, {
-        expiresIn: 300 // expires in 5min
-      });
-      return res.json({ auth: true, token: token });
-    }
+appAuthentcationRouter.post('/', (req, res, next) => {
+    const repository = getCustomRepository(AppUserRepository);
+    let userPromise = repository.findOne(req.body.user)
     
-    res.status(500).json({message: 'Login inválido!'});
+    userPromise.then((user) => {
+      const token = jwt.sign( user.id , process.env.SECRET, { expiresIn: 300 });
+      return res.json({ auth: true, token: token });
+
+    }, (reason) => {
+      return res.status(500).json({message: 'Login inválido!'});
+    })    
 })
 
 appAuthentcationRouter.get('/', async (req, res) => {
