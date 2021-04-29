@@ -5,26 +5,22 @@ import AppUser from '@models/AppUser';
 class UserController {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
-      const {
-        name,
-        cpfUser,
-        email,
-        password,
-        permissionRole,
-      } = req.body;
+      const { name, cpfUser, email,
+        password, permissionRole, } = req.body;
 
       const userRepo = getRepository(UserModel);
-
       const emailExist = await userRepo.findOne({ email });
-      if (emailExist) return next({ status: 400, message: messages.emailAlredyExist });
-
-      if (!cpf.isValid(cpfUser)) return next({ status: 400, message: messages.cpfInvalid });
-
       const cpfExist = await userRepo.findOne({ cpf: cpfUser });
-
-      if (cpfExist) return next({ status: 400, message: messages.cpfRegistered });
-
       const hash = await bcrypt.hash(password, 10);
+
+      if (emailExist) {
+        return next({ status: 400, message: messages.emailAlredyExist });
+      } else if (!cpf.isValid(cpfUser)) {
+        return next({ status: 400, message: messages.cpfInvalid });
+      } else if (cpfExist) {
+        return next({ status: 400, message: messages.cpfRegistered });
+      }
+      
       const user = await userRepo.create({
         name,
         cpf: cpfUser,
@@ -40,10 +36,12 @@ class UserController {
         user: newUser,
         token: generateToken({ id: newUser.id }),
       };
+
       res.locals.status = 201;
       res.locals.data = data;
 
       return next();
+      
     } catch (error) {
       return next(error);
     }
