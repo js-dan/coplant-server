@@ -5,7 +5,7 @@ import AppUserRepository from '../repositories/AppUserRepository';
 
 const appUserRouter = Router();
 
-appUserRouter.post('/new', async (req, res) => {
+appUserRouter.post('/create', async (req, res) => { //Create
   let userName = req.body.name
   let userPhone = req.body.phone
 
@@ -25,18 +25,35 @@ appUserRouter.post('/new', async (req, res) => {
   }
 });
 
-appUserRouter.get('/test', async (req, res) => {
-  res.send("foi");
-});
-
-appUserRouter.get('/', async (req, res) => {
-  res.json(await getRepository(AppUser).find());
-});
-
-appUserRouter.get('/:name', async (req, res) => {
+appUserRouter.get('/:name', async (req, res) => { //Read
   const repository = getCustomRepository(AppUserRepository);
   const response = await repository.findByName(req.params.name);
-  res.json(res);
+  
+  return res.json(response);
+});
+
+appUserRouter.get('/all', async (req, res) => { // Not Working
+  const repository = getCustomRepository(AppUserRepository);
+  let usersPromise = await repository.find()
+
+  return res.status(201).json(usersPromise)
+})
+
+appUserRouter.put('/:name', async (req, res) => { //Update
+  const repository = getCustomRepository(AppUserRepository);
+  let user = await repository.findByName(req.params.name);
+
+  user.phone = req.params.phone ? req.params.phone : user.phone
+  
+  res.json(user);
+});
+
+appUserRouter.delete('/:name', async (req, res) => { //Delete
+  const repository = getCustomRepository(AppUserRepository);
+  let user = await repository.findByName(req.params.name)
+  repository.delete(user)
+
+  return res.status(201).json("Usuário removido com sucesso!")
 });
 
 export default appUserRouter;
