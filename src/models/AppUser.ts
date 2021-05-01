@@ -1,5 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-
+import {Entity, PrimaryGeneratedColumn, Column, OneToMany} from "typeorm"; 
+import {AppOrder} from "./AppOrder";
 @Entity()
 export default class AppUser {
   @PrimaryGeneratedColumn('uuid')
