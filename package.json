@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "author": "Vinícius Scala <viniciusscala@gmail.com>",
-  "license": "MIT",
+  "license": "MIT",  
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
     "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files --no-copy-ignored",
     "start": "yarn build && node dist/server.js",
