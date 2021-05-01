@@ -5,25 +5,13 @@ import AppUserRepository from '../repositories/AppUserRepository';
 import jwt from 'jsonwebtoken';
 
 const appAuthentcationRouter = Router();
-// require("dotenv-safe").config();
 
-
-appAuthentcationRouter.post('/', async (req, res) => {
-  try {
-    const repo = getRepository(AppUser);
-    const response = await repo.save(req.body);
-    return res.status(201).json(res);
-  } catch (err) {
-    console.log('err.message :>> ', err.message);
-  }
-});
-
-appAuthentcationRouter.post('/', (req, res, next) => {
+appAuthentcationRouter.post('/', (req, res, next) => { //Authentication
     const repository = getCustomRepository(AppUserRepository);
-    let userPromise = repository.findOne(req.body.user)
+    let userPromise = repository.findByName(req.body.name)
     
     userPromise.then((user) => {
-      const token = jwt.sign( user.id , process.env.SECRET, { expiresIn: 300 });
+      const token = jwt.sign( user.id , process.env.SECRET);
       return res.json({ auth: true, token: token });
 
     }, (reason) => {
@@ -31,14 +19,14 @@ appAuthentcationRouter.post('/', (req, res, next) => {
     })    
 })
 
-appAuthentcationRouter.get('/', async (req, res) => {
-  res.json(await getRepository(AppUser).find());
-});
+appAuthentcationRouter.post('/signout', (req, res, next) => { //Não sei ainda
+    let token = req.headers['x-access-token'];
 
-appAuthentcationRouter.get('/:name', async (req, res) => {
-  const repository = getCustomRepository(AppUserRepository);
-  const response = await repository.findByName(req.params.name);
-  res.json(res);
-});
+    if (!token) {
+      return res.status(401).json({ auth: false, message: 'Não há usuário logado' });
+    }
+})
+
+
 
 export default appAuthentcationRouter;

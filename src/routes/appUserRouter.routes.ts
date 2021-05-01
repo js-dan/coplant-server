@@ -1,3 +1,5 @@
+import AuthenticationController from '@controllers/AuthenticationController';
+import UserController from '@controllers/UserController';
 import { Router } from 'express';
 import { getRepository, getCustomRepository } from 'typeorm';
 import AppUser from '../models/AppUser';
@@ -5,55 +7,36 @@ import AppUserRepository from '../repositories/AppUserRepository';
 
 const appUserRouter = Router();
 
-appUserRouter.post('/create', async (req, res) => { //Create
-  let userName = req.body.name
-  let userPhone = req.body.phone
-
-  let user = new AppUser()
-  user.name = userName
-  user.phone = userPhone
-  user.latitude = 0
-  user.longitude = 0
-
+appUserRouter.post('/create', UserController.create, async (req, res) => {
   try {
-    const repo = getRepository(AppUser);
-    const response = await repo.save(user);
-    return res.status(201).json(response);
-
+    return res.status(res.locals.status).json(res.locals.data);
   } catch (err) {
-    console.log('err.message :>> ', err.message);
+    return res.status(res.locals.status).json(res.locals.data);
   }
 });
 
-appUserRouter.get('/:name', async (req, res) => { //Read
-  const repository = getCustomRepository(AppUserRepository);
-  const response = await repository.findByName(req.params.name);
-  
-  return res.json(response);
-});
-
-appUserRouter.get('/all', async (req, res) => { // Not Working
-  const repository = getCustomRepository(AppUserRepository);
-  let usersPromise = await repository.find()
-
-  return res.status(201).json(usersPromise)
+appUserRouter.get('/', AuthenticationController.tokenVerify ,UserController.list, async (req, res) => { //Get caregiver list
+  try {
+    return res.status(res.locals.status).json(res.locals.data);
+  } catch (err) {
+    return res.status(res.locals.status).json(res.locals.data);
+  }
 })
 
-appUserRouter.put('/:name', async (req, res) => { //Update
-  const repository = getCustomRepository(AppUserRepository);
-  let user = await repository.findByName(req.params.name);
+appUserRouter.patch('/update', UserController.update, async(req, res) => {
+  try {
+    return res.status(res.locals.status).json(res.locals.data);
+  } catch (err) {
+    return res.status(res.locals.status).json(res.locals.data);
+  }
+})
 
-  user.phone = req.params.phone ? req.params.phone : user.phone
-  
-  res.json(user);
-});
-
-appUserRouter.delete('/:name', async (req, res) => { //Delete
-  const repository = getCustomRepository(AppUserRepository);
-  let user = await repository.findByName(req.params.name)
-  repository.delete(user)
-
-  return res.status(201).json("Usuário removido com sucesso!")
+appUserRouter.get('/email', UserController.findByEmail, async (req, res) => { //Read
+  try {
+    return res.status(res.locals.status).json(res.locals.data);
+  } catch (err) {
+    return res.status(res.locals.status).json(res.locals.data);
+  }
 });
 
 export default appUserRouter;
