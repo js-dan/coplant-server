@@ -23,7 +23,7 @@ appUserRouter.get('/', AuthenticationController.tokenVerify ,UserController.list
   }
 })
 
-appUserRouter.patch('/update', UserController.update, async(req, res) => {
+appUserRouter.patch('/update', AuthenticationController.tokenVerify, UserController.update, async(req, res) => {
   try {
     return res.status(res.locals.status).json(res.locals.data);
   } catch (err) {
@@ -31,7 +31,7 @@ appUserRouter.patch('/update', UserController.update, async(req, res) => {
   }
 })
 
-appUserRouter.get('/email', UserController.findByEmail, async (req, res) => { //Read
+appUserRouter.get('/email', AuthenticationController.tokenVerify, UserController.findByEmail, async (req, res) => { //Read
   try {
     return res.status(res.locals.status).json(res.locals.data);
   } catch (err) {

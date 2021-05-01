@@ -49,12 +49,6 @@ class AuthenticationController {
     res.locals.data = {auth: true, token: token}
     return next()
   }
-  async signOut(req, res, next) {
-    res.removeHeader('x-access-token')
-    res.locals.status = 200
-    res.locals.data = {auth: false}
-    return next()
-  }
 }
 
 export default new AuthenticationController();
