@@ -27,44 +27,59 @@ class PlantController {
     }
   }
 
-  async update(req: Request, res: Response, next: NextFunction) {
+  async getAppPlant(req:Request, res: Response, next: NextFunction) {
     try {
-      const userRepo = getCustomRepository(AppPlantRepository);
-      const { name } = req.body;
-      const { imageURL } = req.body;
-      const { qtd } = req.body;
+      const { id } = req.params;
+      const appPlantRepository = getCustomRepository(AppPlantRepository);
 
-      const plant = await userRepo.findOne({ name });
-
-      if (!plant) {
-        res.locals.status = 400;
-        res.locals.data = 'Usuário não encontrado';
-        return next();
+      if (id) {
+        const [appPlant] = await appPlantRepository.getAppPlant(id);
+        if (!appPlant) {
+          return next({
+            message: 'Produto não cadastrado',
+            status: 404,
+          });
+        }
+        res.locals.data = appPlant;
+        res.locals.status = 200;
+      } else {
+        const producappPlant = await appPlantRepository.getAppPlant();
+        res.locals.data = producappPlant;
+        res.locals.status = 200;
       }
-
-      plant.name = name || plant.name;
-      plant.imageURL = imageURL || plant.imageURL;
-      plant.qtd = qtd || plant.qtd;
-
-      const updatedPlant = await userRepo.save(plant);
-
-      res.locals.status = 200;
-      res.locals.data = updatedPlant;
       return next();
     } catch (error) {
       return next(error);
     }
   }
 
-  async list(req: Request, res: Response, next: NextFunction) {
+  async updateAppPlant(req: Request, res: Response, next: NextFunction) {
     try {
-      console.log('Aqui');
-      const PlantRepo = getCustomRepository(AppPlantRepository);
-      const plants = await PlantRepo.find({ select: ['id', 'name', 'imageURL', 'qtd'] });
+      const data = req.body;
+      const { id } = req.params;
+      const appPlantRepository = getCustomRepository(AppPlantRepository);
+      const [appPlant] = await appPlantRepository.findByIds([id]);
+      if (!appPlant) {
+        return next({
+          message: 'Planta não cadastrada',
+          status: 404,
+        });
+      }
+      const updateInfos = await appPlantRepository.updateAppPlant(id, data);
+      if (!updateInfos) {
+        return next({
+          message: 'Informação não atualizada, tentar novamente',
+          status: 404,
+        });
+      }
 
-      res.locals.data = plants;
+      if (data.name) { appPlant.name = data.name; }
+      if (data.qtd) { appPlant.qtd = data.qtd; }
+      if (data.imageURL) { appPlant.imageURL = data.imageURL; }
+
+      res.locals.data = appPlant;
+      res.locals.message = updateInfos;
       res.locals.status = 200;
-
       return next();
     } catch (error) {
       return next(error);

@@ -7,7 +7,7 @@ appPlantRouter.route('/')
   .post(PlantController.createAppPlant);
 
 appPlantRouter.route('/:id')
-  .get(PlantController.list)
-  .patch(PlantController.update);
+  .get(PlantController.getAppPlant)
+  .patch(PlantController.updateAppPlant);
 
 export default appPlantRouter;
