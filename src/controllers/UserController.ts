@@ -3,32 +3,34 @@ import { getRepository } from 'typeorm';
 import AppUser from '@models/AppUser';
 
 class UserController {
-
   async create(req: Request, res: Response, next: NextFunction) {
     try {
-      const name = req.body.name
-      const email = req.body.email 
-      const password = req.body.password 
-      const description = req.body.description 
-      const imageURL = req.body.imageURL 
-      const isCaregiver = req.body.isCaregiver
-      const address = req.body.address
+      const { name } = req.body;
+      const { email } = req.body;
+      const { password } = req.body;
+      const { description } = req.body;
+      const { imageURL } = req.body;
+      const { isCaregiver } = req.body;
+      const { address } = req.body;
 
       const userRepo = getRepository(AppUser);
-      const emailExist = await userRepo.findOne({ email: email });
+      const emailExist = await userRepo.findOne({ email });
 
       if (emailExist) {
-        res.locals.status = 400
-        res.locals.data = "E-mail já cadastrado, tente outro!"
-        return next()
+        res.locals.status = 400;
+        res.locals.data = 'E-mail já cadastrado, tente outro!';
+        return next();
       }
-      
+
       const user = await userRepo.create({
-        name, email, password, note: 0,
-        description, 
-        imageURL: imageURL ? imageURL : "",
+        name,
+        email,
+        password,
+        note: 0,
+        description,
+        imageURL: imageURL || '',
         isCaregiver,
-        address
+        address,
       });
 
       const newUser = await userRepo.save(user);
@@ -36,56 +38,55 @@ class UserController {
       res.locals.status = 201;
       res.locals.data = newUser;
       return next();
-      
     } catch (error) {
-      res.locals.status = 400
-      res.locals.data = "Há campos faltando"
+      res.locals.status = 400;
+      res.locals.data = 'Há campos faltando';
       return next(error);
     }
   }
+
   async update(req: Request, res: Response, next: NextFunction) {
     try {
       const userRepo = getRepository(AppUser);
-      const name = req.body.name
-      const email = req.body.email 
-      const password = req.body.password 
-      const description = req.body.description 
-      const imageURL = req.body.imageURL 
-      const isCaregiver = req.body.isCaregiver
-      const address = req.body.address
-      const note = req.body.note
+      const { name } = req.body;
+      const { email } = req.body;
+      const { password } = req.body;
+      const { description } = req.body;
+      const { imageURL } = req.body;
+      const { isCaregiver } = req.body;
+      const { address } = req.body;
+      const { note } = req.body;
 
-      let user = await userRepo.findOne({ email: email })
-      
+      const user = await userRepo.findOne({ email });
+
       if (!user) {
-        res.locals.status = 400
-        res.locals.data = "Usuário não encontrado"
-        return next()
+        res.locals.status = 400;
+        res.locals.data = 'Usuário não encontrado';
+        return next();
       }
-      user.note = note ? note : user.note
-      user.name = name ? name : user.name
-      user.password = password ? password : user.password
-      user.description = description ? description : user.description
-      user.imageURL = imageURL ? imageURL : user.imageURL
-      user.isCaregiver = isCaregiver == null ? isCaregiver : user.isCaregiver
-      user.address = address ? address : user.address
-      
-      let updatedUser = await userRepo.save(user)
+      user.note = note || user.note;
+      user.name = name || user.name;
+      user.password = password || user.password;
+      user.description = description || user.description;
+      user.imageURL = imageURL || user.imageURL;
+      user.isCaregiver = isCaregiver == null ? isCaregiver : user.isCaregiver;
+      user.address = address || user.address;
+
+      const updatedUser = await userRepo.save(user);
 
       res.locals.status = 200;
       res.locals.data = updatedUser;
-      return next()
-    }
-
-    catch(error) {
+      return next();
+    } catch (error) {
       return next(error);
     }
   }
+
   async list(req: Request, res: Response, next: NextFunction) {
     try {
       const userRepo = getRepository(AppUser);
-      const users = await userRepo.find({ where: {isCaregiver: true} ,select: ['id', 'name', 'email', 'isCaregiver', 'imageURL', 'address', 'description', 'note'] });
-      
+      const users = await userRepo.find({ where: { isCaregiver: true }, select: ['id', 'name', 'email', 'isCaregiver', 'imageURL', 'address', 'description', 'note'] });
+
       res.locals.data = users;
       res.locals.status = 200;
 
@@ -98,21 +99,20 @@ class UserController {
   async findByEmail(req: Request, res: Response, next: NextFunction) {
     try {
       const userRepo = getRepository(AppUser);
-      const email = req.query.email
+      const { email } = req.query;
 
       if (!email) {
-        return next({ status: 400, message: "O email do usuário não foi fornecido"});
+        return next({ status: 400, message: 'O email do usuário não foi fornecido' });
       }
 
-      const user = await userRepo.findOne({where: {email: email}})
-      
-      res.locals.data = user
-      res.locals.status = 200
+      const user = await userRepo.findOne({ where: { email } });
 
-      return next()
+      res.locals.data = user;
+      res.locals.status = 200;
 
+      return next();
     } catch (error) {
-      return next(error)
+      return next(error);
     }
   }
 }
