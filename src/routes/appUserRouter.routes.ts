@@ -1,3 +1,5 @@
+import AuthenticationController from '@controllers/AuthenticationController';
+import UserController from '@controllers/UserController';
 import { Router } from 'express';
 import { getRepository, getCustomRepository } from 'typeorm';
 import AppUser from '../models/AppUser';
@@ -5,28 +7,36 @@ import AppUserRepository from '../repositories/AppUserRepository';
 
 const appUserRouter = Router();
 
-appUserRouter.post('/', async (req, res) => {
+appUserRouter.post('/create', UserController.create, async (req, res) => {
   try {
-    const repo = getRepository(AppUser);
-    const response = await repo.save(req.body);
-    return res.status(201).json(res);
+    return res.status(res.locals.status).json(res.locals.data);
   } catch (err) {
-    console.log('err.message :>> ', err.message);
+    return res.status(res.locals.status).json(res.locals.data);
   }
 });
 
-appUserRouter.get('/test', async (req, res) => {
-  res.send("foi");
-});
+appUserRouter.get('/', AuthenticationController.tokenVerify ,UserController.list, async (req, res) => { //Get caregiver list
+  try {
+    return res.status(res.locals.status).json(res.locals.data);
+  } catch (err) {
+    return res.status(res.locals.status).json(res.locals.data);
+  }
+})
 
-appUserRouter.get('/', async (req, res) => {
-  res.json(await getRepository(AppUser).find());
-});
+appUserRouter.patch('/update', AuthenticationController.tokenVerify, UserController.update, async(req, res) => {
+  try {
+    return res.status(res.locals.status).json(res.locals.data);
+  } catch (err) {
+    return res.status(res.locals.status).json(res.locals.data);
+  }
+})
 
-appUserRouter.get('/:name', async (req, res) => {
-  const repository = getCustomRepository(AppUserRepository);
-  const response = await repository.findByName(req.params.name);
-  res.json(res);
+appUserRouter.get('/email', AuthenticationController.tokenVerify, UserController.findByEmail, async (req, res) => { //Read
+  try {
+    return res.status(res.locals.status).json(res.locals.data);
+  } catch (err) {
+    return res.status(res.locals.status).json(res.locals.data);
+  }
 });
 
 export default appUserRouter;
