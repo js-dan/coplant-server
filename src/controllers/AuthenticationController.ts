@@ -22,6 +22,7 @@ class AuthenticationController {
       next();
     });
   }
+  
   async signIn(req, res, next) {
     const repository = getRepository(AppUser);
 
