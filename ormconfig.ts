@@ -1,6 +1,6 @@
-import "dotenv/config";
 
-export = {
+
+export default {
   type: process.env.DATABASE_TYPE,
   host: process.env.DATABASE_HOST,
   port: process.env.DATABASE_PORT,

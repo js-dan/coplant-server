@@ -15,7 +15,21 @@ function _applyDecoratedDescriptor(target, property, decorators, descriptor, con
 
 function _initializerWarningHelper(descriptor, context) { throw new Error('Decorating class property failed. Please ensure that ' + 'proposal-class-properties is enabled and runs after the decorators transform.'); }
 
-let AppUser = (_dec = (0, _typeorm.Entity)(), _dec2 = (0, _typeorm.PrimaryGeneratedColumn)(), _dec3 = (0, _typeorm.Column)(), _dec4 = (0, _typeorm.Column)(), _dec5 = (0, _typeorm.Column)(), _dec6 = (0, _typeorm.Column)(), _dec7 = (0, _typeorm.Column)(), _dec8 = (0, _typeorm.Column)(), _dec9 = (0, _typeorm.Column)(), _dec10 = (0, _typeorm.Column)({
+let AppUser = (_dec = (0, _typeorm.Entity)(), _dec2 = (0, _typeorm.PrimaryGeneratedColumn)(), _dec3 = (0, _typeorm.Column)('text', {
+  nullable: true
+}), _dec4 = (0, _typeorm.Column)('text', {
+  nullable: true
+}), _dec5 = (0, _typeorm.Column)('text', {
+  nullable: true
+}), _dec6 = (0, _typeorm.Column)('text', {
+  nullable: true
+}), _dec7 = (0, _typeorm.Column)('text', {
+  nullable: true
+}), _dec8 = (0, _typeorm.Column)('text', {
+  nullable: true
+}), _dec9 = (0, _typeorm.Column)('bool', {
+  nullable: true
+}), _dec10 = (0, _typeorm.Column)({
   type: 'double precision'
 }), _dec(_class = (_class2 = class AppUser {
   constructor() {

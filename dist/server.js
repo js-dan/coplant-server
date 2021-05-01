@@ -1,8 +1,8 @@
 "use strict";
 
-var _app = _interopRequireDefault(require("./app"));
-
 require("reflect-metadata");
+
+var _app = _interopRequireDefault(require("./app"));
 
 require("./database");
 

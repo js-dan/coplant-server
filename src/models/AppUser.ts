@@ -5,25 +5,25 @@ export default class AppUser {
   @PrimaryGeneratedColumn()
   id!: string;
 
-  @Column()
+  @Column('text',{nullable:true})
   name!: string;
 
-  @Column()
+  @Column('text',{nullable:true})
   email!: string;
 
-  @Column()
+  @Column('text',{nullable:true})
   password!: string;
 
-  @Column()
+  @Column('text',{nullable:true})
   description!: string;
 
-  @Column()
+  @Column('text',{nullable:true})
   address!: string;
 
-  @Column()
+  @Column('text',{nullable:true})
   imageURL: string;
 
-  @Column()
+  @Column('bool',{nullable:true})
   isCaregiver!: boolean;
 
   @Column({ type: 'double precision' })

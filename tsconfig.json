@@ -15,7 +15,8 @@
     "resolveJsonModule": true,
     "experimentalDecorators": true,        
     "emitDecoratorMetadata": true,         
-    "skipLibCheck": true,                     
+    "skipLibCheck": true,  
+    "strict": false,                   
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
