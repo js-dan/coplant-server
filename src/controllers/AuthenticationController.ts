@@ -6,7 +6,6 @@ import jwt from 'jsonwebtoken';
 class AuthenticationController {
   async tokenVerify(req, res, next){
     const token = req.headers['x-access-token'];
-    console.log("Testando")
     
     if (!token) {
       return res.status(401).json({ auth: false, message: 'No token provided.' });
