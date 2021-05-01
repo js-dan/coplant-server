@@ -16,7 +16,7 @@ class UserController {
 
       const userRepo = getRepository(AppUser);
       const emailExist = await userRepo.findOne({ email: email });
-
+      
       if (emailExist) {
         res.locals.status = 400
         res.locals.data = "E-mail já cadastrado, tente outro!"

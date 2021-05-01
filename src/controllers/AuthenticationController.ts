@@ -48,13 +48,12 @@ class AuthenticationController {
     res.locals.status = 200
     res.locals.data = {auth: true, token: token}
     return next()
-
-
   }
   async signOut(req, res, next) {
-    const token = req.headers['x-access-token'];
-
-
+    res.removeHeader('x-access-token')
+    res.locals.status = 200
+    res.locals.data = {auth: false}
+    return next()
   }
 }
 

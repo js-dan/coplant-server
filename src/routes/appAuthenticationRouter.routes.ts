@@ -19,12 +19,12 @@ appAuthentcationRouter.post('/', (req, res, next) => { //Authentication
     })    
 })
 
-appAuthentcationRouter.post('/signout', (req, res, next) => { //Não sei ainda
-    let token = req.headers['x-access-token'];
-
-    if (!token) {
-      return res.status(401).json({ auth: false, message: 'Não há usuário logado' });
-    }
+appAuthentcationRouter.get('/signout', (req, res, next) => { //Não sei ainda
+  try {
+    return res.status(res.locals.status).json(res.locals.data);
+  } catch (err) {
+    return res.status(res.locals.status).json(res.locals.data);
+  }
 })
 
 
