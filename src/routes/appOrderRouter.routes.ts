@@ -11,13 +11,13 @@ appOrderRouter.post('/create', OrderController.create, async (req, res) => {
     }
   });
   
-// appOrderRouter.get('/',OrderController.list, async (req, res) => { //Get order list
-//     try {
-//       return res.status(res.locals.status).json(res.locals.data);
-//     } catch (err) {
-//       return res.status(res.locals.status).json(res.locals.data);
-//     }
-//   })
+appOrderRouter.get('/list', OrderController.list, async (req, res) => {
+    try {
+      return res.status(res.locals.status).json(res.locals.data);
+    } catch (err) {
+      return res.status(res.locals.status).json(res.locals.data);
+    }
+  });
   
   export default appOrderRouter;
   
