@@ -32,6 +32,9 @@ export class AppOrder{
 
    @Column()
    description: string;
+
+   @Column()
+   order_status: string;
    
    // @ManyToOne(type => AppUser, user => user.order) user: AppUser; 
 }

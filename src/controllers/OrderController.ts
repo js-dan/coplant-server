@@ -15,10 +15,11 @@ class OrderController {
       const description = req.body.description
       const id_client = req.body.id_client
       const id_caregiver = req.body.id_caregiver
+      const order_status = req.body.order_status
       const orderRepo = getRepository(AppOrder);
       
       const order = await orderRepo.create({
-        start_date,end_date,price,score_caregiver,score_client,comment,description,id_client,id_caregiver
+        start_date,end_date,price,score_caregiver,score_client,comment,description,id_client,id_caregiver,order_status
       });
 
       const newOrder = await orderRepo.save(order);
@@ -33,78 +34,20 @@ class OrderController {
       return next(error);
     }
   }
-//   async update(req: Request, res: Response, next: NextFunction) {
-//     try {
-//       const orderRepo = getRepository(AppOrder);
-//       const name = req.body.name
-//       const email = req.body.email 
-//       const password = req.body.password 
-//       const description = req.body.description 
-//       const imageURL = req.body.imageURL 
-//       const isCaregiver = req.body.isCaregiver
-//       const address = req.body.address
-//       const note = req.body.note
+  async list(req: Request, res: Response, next: NextFunction) {
+        try {
+        const orderRepo = getRepository(AppOrder);
+        const orders = await orderRepo.find({select: ['id', 'start_date', 'end_date', 'price', 'score_caregiver', 'score_client', 'comment', 'description','id_client','id_caregiver','order_status']});
+        
+        res.locals.data = orders;
+        res.locals.status = 200;
 
-//       let order = await orderRepo.findOne({ email: email })
-      
-//       if (!order) {
-//         res.locals.status = 400
-//         res.locals.data = "Usuário não encontrado"
-//         return next()
-//       }
-//       order.note = note ? note : order.note
-//       order.name = name ? name : order.name
-//       order.password = password ? password : order.password
-//       order.description = description ? description : order.description
-//       order.imageURL = imageURL ? imageURL : order.imageURL
-//       order.isCaregiver = isCaregiver == null ? isCaregiver : order.isCaregiver
-//       order.address = address ? address : order.address
-      
-//       let updatedOrder = await orderRepo.save(order)
+        return next();
+        } catch (error) {
+        return next(error);
+        }
+    }
 
-//       res.locals.status = 200;
-//       res.locals.data = updatedOrder;
-//       return next()
-//     }
-
-//     catch(error) {
-//       return next(error);
-//     }
-//   }
-//   async list(req: Request, res: Response, next: NextFunction) {
-//     try {
-//       const orderRepo = getRepository(AppOrder);
-//       const orders = await orderRepo.find({ where: {isCaregiver: true} ,select: ['id', 'name', 'email', 'isCaregiver', 'imageURL', 'address', 'description', 'note'] });
-      
-//       res.locals.data = orders;
-//       res.locals.status = 200;
-
-//       return next();
-//     } catch (error) {
-//       return next(error);
-//     }
-//   }
-
-//   async findByEmail(req: Request, res: Response, next: NextFunction) {
-//     try {
-//       const orderRepo = getRepository(AppOrder);
-//       const email = req.query.email
-
-//       if (!email) {
-//         return next({ status: 400, message: "O email do usuário não foi fornecido"});
-//       }
-
-//       const order = await orderRepo.findOne({where: {email: email}})
-      
-//       res.locals.data = order
-//       res.locals.status = 200
-
-//       return next()
-
-//     } catch (error) {
-//       return next(error)
-//     }
-//   }
 }
 
 export default new OrderController();
