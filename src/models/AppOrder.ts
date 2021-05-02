@@ -7,6 +7,12 @@ export class AppOrder{
    id: number; 
    
    @Column() 
+   id_client: string;
+
+   @Column() 
+   id_caregiver: string;
+
+   @Column() 
    start_date: string;
 
    @Column()
@@ -27,5 +33,5 @@ export class AppOrder{
    @Column()
    description: string;
    
-   @ManyToOne(type => AppUser, user => user.order) user: AppUser; 
+   // @ManyToOne(type => AppUser, user => user.order) user: AppUser; 
 }
