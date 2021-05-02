@@ -15,7 +15,7 @@ appPlantRouter.post('/create', PlantController.create, async (req, res) => {
   }
 });
 
-appPlantRouter.get('/', AuthenticationController.tokenVerify ,PlantController.list, async (req, res) => { //Get caregiver list
+appPlantRouter.get('/', PlantController.list, async (req, res) => { //Get caregiver list
   try {
     return res.status(res.locals.status).json(res.locals.data);
   } catch (err) {
