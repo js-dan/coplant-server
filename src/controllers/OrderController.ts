@@ -13,11 +13,12 @@ class OrderController {
       const score_client = req.body.score_client 
       const comment = req.body.comment
       const description = req.body.description
-      
+      const id_client = req.body.id_client
+      const id_caregiver = req.body.id_caregiver
       const orderRepo = getRepository(AppOrder);
       
       const order = await orderRepo.create({
-        start_date,end_date,price,score_caregiver,score_client,comment,description
+        start_date,end_date,price,score_caregiver,score_client,comment,description,id_client,id_caregiver
       });
 
       const newOrder = await orderRepo.save(order);

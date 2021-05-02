@@ -7,6 +7,8 @@ export class Order1619885604136 implements MigrationInterface {
         CREATE TABLE "app_order" 
         ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), 
         "start_date" character varying NOT NULL,
+        "id_client" character varying NOT NULL,
+        "id_caregiver" character varying NOT NULL,
         "end_date" character varying NOT NULL,
         "price" double precision NOT NULL,
         "score_caregiver" double precision NOT NULL,
