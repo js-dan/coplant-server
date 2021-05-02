@@ -6,6 +6,7 @@ class PlantController {
 
   async create(req: Request, res: Response, next: NextFunction) {
     try {
+      console.log("aqui")
       const name = req.body.name
       const imageURL = req.body.imageURL 
       const qtd = req.body.qtd
