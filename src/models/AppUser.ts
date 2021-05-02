@@ -17,5 +17,5 @@ export default class AppUser {
   @Column({ type: 'double precision' })
   longitude!: number;
 
-  @OneToMany(type => AppOrder, order => order.user) order: AppOrder[];  
+  // @OneToMany(type => AppOrder, order => order.user) order: AppOrder[];  
 }
