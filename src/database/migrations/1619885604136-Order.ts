@@ -15,6 +15,7 @@ export class Order1619885604136 implements MigrationInterface {
         "score_client" double precision NOT NULL,
         "comment" character varying NOT NULL,
         "description" character varying NOT NULL,
+        "order_status" character varying NOT NULL,
         CONSTRAINT "PK_22a5c4a3d9b2fb8e4e73fc4ada2" PRIMARY KEY ("id"))
         `); 
     }
