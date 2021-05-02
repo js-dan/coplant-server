@@ -46,7 +46,7 @@ class AuthenticationController {
     const token = jwt.sign(user.id, process.env.SECRET)
     
     res.locals.status = 200
-    res.locals.data = {auth: true, token: token}
+    res.locals.data = {token: token, user: user}
     return next()
   }
 }
